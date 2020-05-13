@@ -13,9 +13,9 @@ public class Main {
         wrapService.say();
         HelloWorldService helloWorldService = (HelloWorldService) applicationContext.getBean("helloWorldService");
         HelloWorldService helloWorldService2 = (HelloWorldService) applicationContext.getBean("helloWorldService");
-        System.out.println(helloWorldService == wrapService.helloWorldService);
-        System.out.println(helloWorldService2 == wrapService.helloWorldService);
-        System.out.println(helloWorldService == helloWorldService2);
+        System.out.println("prototype验证：" + (helloWorldService == helloWorldService2));
+        WrapService wrapService2 = (WrapService) applicationContext.getBean("wrapService");
+        System.out.println("singleton验证：" + (wrapService == wrapService2));
     }
 
 }
