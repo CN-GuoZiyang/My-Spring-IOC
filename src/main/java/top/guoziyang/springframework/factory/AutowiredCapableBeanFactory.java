@@ -10,7 +10,7 @@ public class AutowiredCapableBeanFactory extends AbstractBeanFactory {
 
     @Override
     Object doCreateBean(BeanDefinition beanDefinition) throws Exception {
-        if(beanDefinition.getBean() != null) {
+        if(beanDefinition.isSingleton() && beanDefinition.getBean() != null) {
             return beanDefinition.getBean();
         }
         Object bean = beanDefinition.getBeanClass().newInstance();

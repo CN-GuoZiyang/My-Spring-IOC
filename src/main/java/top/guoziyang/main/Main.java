@@ -12,7 +12,10 @@ public class Main {
         WrapService wrapService = (WrapService) applicationContext.getBean("wrapService");
         wrapService.say();
         HelloWorldService helloWorldService = (HelloWorldService) applicationContext.getBean("helloWorldService");
+        HelloWorldService helloWorldService2 = (HelloWorldService) applicationContext.getBean("helloWorldService");
         System.out.println(helloWorldService == wrapService.helloWorldService);
+        System.out.println(helloWorldService2 == wrapService.helloWorldService);
+        System.out.println(helloWorldService == helloWorldService2);
     }
 
 }

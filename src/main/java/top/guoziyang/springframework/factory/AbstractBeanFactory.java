@@ -10,19 +10,33 @@ public abstract class AbstractBeanFactory implements BeanFactory {
     ConcurrentHashMap<String, BeanDefinition> beanDefinitionMap = new ConcurrentHashMap<>();
 
     @Override
-    public Object getBean(String name) {
-        return beanDefinitionMap.get(name).getBean();
+    public Object getBean(String name) throws Exception {
+        BeanDefinition beanDefinition = beanDefinitionMap.get(name);
+        if(beanDefinition == null) return null;
+        if(!beanDefinition.isSingleton() || beanDefinition.getBean() == null) {
+            return doCreateBean(beanDefinition);
+        } else {
+            return doCreateBean(beanDefinition);
+        }
     }
 
     @Override
-    public Object getBean(Class clazz) {
+    public Object getBean(Class clazz) throws Exception {
+        BeanDefinition beanDefinition = null;
         for(Map.Entry<String, BeanDefinition> entry : beanDefinitionMap.entrySet()) {
             Class tmpClass = entry.getValue().getBeanClass();
             if(tmpClass == clazz || clazz.isAssignableFrom(tmpClass)) {
-                return entry.getValue().getBean();
+                beanDefinition = entry.getValue();
             }
         }
-        return null;
+        if(beanDefinition == null) {
+            return null;
+        }
+        if(!beanDefinition.isSingleton() || beanDefinition.getBean() == null) {
+            return doCreateBean(beanDefinition);
+        } else {
+            return beanDefinition.getBean();
+        }
     }
 
     @Override
