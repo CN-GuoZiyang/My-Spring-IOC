@@ -10,6 +10,7 @@ public class BeanDefinition {
     private Object bean;
     private Class beanClass;
     private String beanClassName;
+    private Boolean singleton;
     private PropertyValues propertyValues;
 
     public Object getBean() {
@@ -50,5 +51,13 @@ public class BeanDefinition {
 
     public void setPropertyValues(PropertyValues propertyValues) {
         this.propertyValues = propertyValues;
+    }
+
+    public Boolean isSingleton() {
+        return singleton;
+    }
+
+    public void setSingleton(Boolean singleton) {
+        this.singleton = singleton;
     }
 }

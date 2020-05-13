@@ -40,8 +40,7 @@ public abstract class AbstractBeanFactory implements BeanFactory {
 
     public void populateBeans() throws Exception {
         for(Map.Entry<String, BeanDefinition> entry : beanDefinitionMap.entrySet()) {
-            Object bean = doCreateBean(entry.getValue());
-            entry.getValue().setBean(bean);
+            doCreateBean(entry.getValue());
         }
     }
 }

@@ -14,7 +14,9 @@ public class AutowiredCapableBeanFactory extends AbstractBeanFactory {
             return beanDefinition.getBean();
         }
         Object bean = beanDefinition.getBeanClass().newInstance();
-        beanDefinition.setBean(bean);
+        if(beanDefinition.isSingleton()) {
+            beanDefinition.setBean(bean);
+        }
         applyPropertyValues(bean, beanDefinition);
         return bean;
     }
@@ -33,9 +35,8 @@ public class AutowiredCapableBeanFactory extends AbstractBeanFactory {
                 BeanReference beanReference = (BeanReference) propertyValue.getValue();
                 BeanDefinition refDefinition = beanDefinitionMap.get(beanReference.getName());
                 if(refDefinition.getBean() == null) {
-                    doCreateBean(refDefinition);
+                    value = doCreateBean(refDefinition);
                 }
-                value = refDefinition.getBean();
             }
             field.setAccessible(true);
             field.set(bean, value);

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans>
 
-    <bean id="helloWorldService" class="top.guoziyang.main.service.HelloWorldServiceImpl">
+    <bean id="helloWorldService" class="top.guoziyang.main.service.HelloWorldServiceImpl" scope="prototype">
         <property name="text" value="Hello World"></property>
     </bean>
 
