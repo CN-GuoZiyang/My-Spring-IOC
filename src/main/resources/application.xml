@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans>
+
+    <bean id="helloWorldService" class="top.guoziyang.main.service.HelloWorldServiceImpl">
+        <property name="text" value="Hello World"></property>
+    </bean>
+
+</beans>
