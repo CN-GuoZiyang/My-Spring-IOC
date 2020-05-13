@@ -1,6 +1,7 @@
 package top.guoziyang.springframework.factory;
 
 import top.guoziyang.springframework.entity.BeanDefinition;
+import top.guoziyang.springframework.entity.BeanReference;
 import top.guoziyang.springframework.entity.PropertyValue;
 
 import java.lang.reflect.Field;
@@ -9,6 +10,9 @@ public class AutowiredCapableBeanFactory extends AbstractBeanFactory {
 
     @Override
     Object doCreateBean(BeanDefinition beanDefinition) throws Exception {
+        if(beanDefinition.getBean() != null) {
+            return beanDefinition.getBean();
+        }
         Object bean = beanDefinition.getBeanClass().newInstance();
         beanDefinition.setBean(bean);
         applyPropertyValues(bean, beanDefinition);
@@ -24,8 +28,17 @@ public class AutowiredCapableBeanFactory extends AbstractBeanFactory {
     void applyPropertyValues(Object bean, BeanDefinition beanDefinition) throws Exception {
         for(PropertyValue propertyValue : beanDefinition.getPropertyValues().getPropertyValues()) {
             Field field = bean.getClass().getDeclaredField(propertyValue.getName());
+            Object value = propertyValue.getValue();
+            if(value instanceof BeanReference) {
+                BeanReference beanReference = (BeanReference) propertyValue.getValue();
+                BeanDefinition refDefinition = beanDefinitionMap.get(beanReference.getName());
+                if(refDefinition.getBean() == null) {
+                    doCreateBean(refDefinition);
+                }
+                value = refDefinition.getBean();
+            }
             field.setAccessible(true);
-            field.set(bean, propertyValue.getValue());
+            field.set(bean, value);
         }
     }
 

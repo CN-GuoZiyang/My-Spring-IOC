@@ -5,4 +5,8 @@
         <property name="text" value="Hello World"></property>
     </bean>
 
+    <bean id="wrapService" class="top.guoziyang.main.service.WrapService">
+        <property name="helloWorldService" ref="helloWorldService"></property>
+    </bean>
+
 </beans>

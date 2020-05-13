@@ -7,7 +7,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public abstract class AbstractBeanFactory implements BeanFactory {
 
-    private ConcurrentHashMap<String, BeanDefinition> beanDefinitionMap = new ConcurrentHashMap<>();
+    ConcurrentHashMap<String, BeanDefinition> beanDefinitionMap = new ConcurrentHashMap<>();
 
     @Override
     public Object getBean(String name) {
@@ -26,9 +26,7 @@ public abstract class AbstractBeanFactory implements BeanFactory {
     }
 
     @Override
-    public void registerBeanDefinition(String name, BeanDefinition beanDefinition) throws Exception {
-        Object bean = doCreateBean(beanDefinition);
-        beanDefinition.setBean(bean);
+    public void registerBeanDefinition(String name, BeanDefinition beanDefinition) {
         beanDefinitionMap.put(name, beanDefinition);
     }
 
