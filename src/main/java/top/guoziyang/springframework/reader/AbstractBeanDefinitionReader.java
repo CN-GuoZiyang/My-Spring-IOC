@@ -1,6 +1,6 @@
 package top.guoziyang.springframework.reader;
 
-import top.guoziyang.springframework.BeanDefinition;
+import top.guoziyang.springframework.entity.BeanDefinition;
 import top.guoziyang.springframework.io.ResourceLoader;
 
 import java.util.HashMap;

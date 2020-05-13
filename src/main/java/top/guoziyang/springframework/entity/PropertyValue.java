@@ -1,4 +1,4 @@
-package top.guoziyang.springframework;
+package top.guoziyang.springframework.entity;
 
 /**
  * 单个键值对，表示注入对象的属性

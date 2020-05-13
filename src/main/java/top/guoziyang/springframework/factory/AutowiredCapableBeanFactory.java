@@ -1,7 +1,7 @@
 package top.guoziyang.springframework.factory;
 
-import top.guoziyang.springframework.BeanDefinition;
-import top.guoziyang.springframework.PropertyValue;
+import top.guoziyang.springframework.entity.BeanDefinition;
+import top.guoziyang.springframework.entity.PropertyValue;
 
 import java.lang.reflect.Field;
 

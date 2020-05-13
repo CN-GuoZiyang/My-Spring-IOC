@@ -1,4 +1,4 @@
-package top.guoziyang.springframework;
+package top.guoziyang.springframework.entity;
 
 import java.util.ArrayList;
 import java.util.List;

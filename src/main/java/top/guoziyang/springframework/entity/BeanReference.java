@@ -1,4 +1,4 @@
-package top.guoziyang.springframework;
+package top.guoziyang.springframework.entity;
 
 /**
  * 注入类型为引用的定义

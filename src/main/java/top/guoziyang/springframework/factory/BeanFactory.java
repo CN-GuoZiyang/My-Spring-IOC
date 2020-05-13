@@ -1,6 +1,6 @@
 package top.guoziyang.springframework.factory;
 
-import top.guoziyang.springframework.BeanDefinition;
+import top.guoziyang.springframework.entity.BeanDefinition;
 
 /**
  * Bean工厂接口
@@ -10,11 +10,18 @@ import top.guoziyang.springframework.BeanDefinition;
 public interface BeanFactory {
 
     /**
-     * 从容器中获取bean
+     * 根据名称从容器中获取bean
      * @param name bean的名字
      * @return bean实例对象
      */
     Object getBean(String name);
+
+    /**
+     * 根据类从容器中获取bean
+     * @param clazz bean的类对象
+     * @return bean实例对象
+     */
+    Object getBean(Class clazz);
 
     /**
      * 向工厂中注册bean定义

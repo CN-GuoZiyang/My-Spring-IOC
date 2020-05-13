@@ -4,11 +4,10 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
-import top.guoziyang.springframework.BeanDefinition;
-import top.guoziyang.springframework.BeanReference;
-import top.guoziyang.springframework.PropertyValue;
+import top.guoziyang.springframework.entity.BeanDefinition;
+import top.guoziyang.springframework.entity.BeanReference;
+import top.guoziyang.springframework.entity.PropertyValue;
 import top.guoziyang.springframework.io.ResourceLoader;
-import top.guoziyang.springframework.reader.AbstractBeanDefinitionReader;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;

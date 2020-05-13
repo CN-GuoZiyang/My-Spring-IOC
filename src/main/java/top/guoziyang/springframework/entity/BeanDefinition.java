@@ -1,4 +1,4 @@
-package top.guoziyang.springframework;
+package top.guoziyang.springframework.entity;
 
 /**
  * 从配置文件中读取的Bean的定义

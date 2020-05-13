@@ -1,7 +1,8 @@
 package top.guoziyang.springframework.factory;
 
-import top.guoziyang.springframework.BeanDefinition;
+import top.guoziyang.springframework.entity.BeanDefinition;
 
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 public abstract class AbstractBeanFactory implements BeanFactory {
@@ -11,6 +12,17 @@ public abstract class AbstractBeanFactory implements BeanFactory {
     @Override
     public Object getBean(String name) {
         return beanDefinitionMap.get(name).getBean();
+    }
+
+    @Override
+    public Object getBean(Class clazz) {
+        for(Map.Entry<String, BeanDefinition> entry : beanDefinitionMap.entrySet()) {
+            Class tmpClass = entry.getValue().getBeanClass();
+            if(tmpClass == clazz || clazz.isAssignableFrom(tmpClass)) {
+                return entry.getValue().getBean();
+            }
+        }
+        return null;
     }
 
     @Override
@@ -27,4 +39,11 @@ public abstract class AbstractBeanFactory implements BeanFactory {
      * @throws Exception 可能出现的异常
      */
     abstract Object doCreateBean(BeanDefinition beanDefinition) throws Exception;
+
+    public void populateBeans() throws Exception {
+        for(Map.Entry<String, BeanDefinition> entry : beanDefinitionMap.entrySet()) {
+            Object bean = doCreateBean(entry.getValue());
+            entry.getValue().setBean(bean);
+        }
+    }
 }
