@@ -8,7 +8,7 @@ import top.guoziyang.springframework.context.ClassPathXmlApplicationContext;
 public class Main {
 
     public static void main(String[] args) throws Exception {
-        annotationTest();
+        xmlTest();
     }
 
     public static void xmlTest() throws Exception {

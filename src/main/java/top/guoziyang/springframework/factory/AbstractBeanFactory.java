@@ -12,7 +12,9 @@ public abstract class AbstractBeanFactory implements BeanFactory {
     @Override
     public Object getBean(String name) throws Exception {
         BeanDefinition beanDefinition = beanDefinitionMap.get(name);
-        if(beanDefinition == null) return null;
+        if(beanDefinition == null) {
+            throw new RuntimeException("Unable to find the bean of this name, please check!");
+        }
         if(!beanDefinition.isSingleton() || beanDefinition.getBean() == null) {
             return doCreateBean(beanDefinition);
         } else {
@@ -30,7 +32,7 @@ public abstract class AbstractBeanFactory implements BeanFactory {
             }
         }
         if(beanDefinition == null) {
-            return null;
+            throw new RuntimeException("Unable to find the bean of this class, please check!");
         }
         if(!beanDefinition.isSingleton() || beanDefinition.getBean() == null) {
             return doCreateBean(beanDefinition);

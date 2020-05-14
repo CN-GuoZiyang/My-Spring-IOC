@@ -7,7 +7,7 @@ Spring IOC容器的一个简单的实现
 - 引用依赖注入
 - 递归引用注入
 - singleton与prototype模式注入
+- 注解配置
 
 ### TODO：
-- 注解配置
 - AOP实现
