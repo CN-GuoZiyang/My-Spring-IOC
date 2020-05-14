@@ -129,8 +129,9 @@ public class XmlBeanDefinitionReader extends AbstractBeanDefinitionReader {
                     BeanReference beanReference = new BeanReference(ref);
                     beanDefinition.getPropertyValues().addPropertyValue(new PropertyValue(name, beanReference));
                 } else {
-                    // TODO 按类型自动注入
-                    throw new IllegalArgumentException("Autowired alone Not supported yet!");
+                    String ref = field.getType().getName();
+                    BeanReference beanReference = new BeanReference(ref);
+                    beanDefinition.getPropertyValues().addPropertyValue(new PropertyValue(name, beanReference));
                 }
             }
         }
