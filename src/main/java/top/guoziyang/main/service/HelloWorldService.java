@@ -4,4 +4,6 @@ public interface HelloWorldService {
 
     void saySomething();
 
+    String getString();
+
 }

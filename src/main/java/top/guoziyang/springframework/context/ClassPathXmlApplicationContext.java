@@ -31,6 +31,15 @@ public class ClassPathXmlApplicationContext extends AbstractApplicationContext {
         beanFactory.populateBeans();
     }
 
+    public void addNewBeanDefinition(String name, BeanDefinition beanDefinition) throws Exception {
+        XmlBeanDefinitionReader.processAnnotationProperty(beanDefinition.getBeanClass(), beanDefinition);
+        beanFactory.registerBeanDefinition(name, beanDefinition);
+    }
+
+    public void refreshBeanFactory() throws Exception {
+        prepareBeanFactory((AbstractBeanFactory) beanFactory);
+    }
+
     private AbstractBeanFactory obtainBeanFactory() throws Exception {
         XmlBeanDefinitionReader beanDefinitionReader = new XmlBeanDefinitionReader(new ResourceLoader());
         beanDefinitionReader.loadBeanDefinitions(location);

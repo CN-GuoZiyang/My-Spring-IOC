@@ -8,11 +8,16 @@ import top.guoziyang.springframework.annotation.Value;
 @Scope("prototype")
 public class HelloWorldServiceImpl implements HelloWorldService {
 
-    @Value("Hello, world")
+    @Value("Hello world")
     private String text;
 
     @Override
     public void saySomething() {
         System.out.println(text);
+    }
+
+    @Override
+    public String getString() {
+        return text;
     }
 }
