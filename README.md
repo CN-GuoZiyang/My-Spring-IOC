@@ -12,3 +12,4 @@ Spring IOC容器的一个简单的实现，内含有一个简单的仿Spring MVC
 
 ### TODO：
 - AOP实现
+- 循环依赖
