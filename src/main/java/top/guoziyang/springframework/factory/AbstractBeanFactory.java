@@ -15,12 +15,9 @@ public abstract class AbstractBeanFactory implements BeanFactory {
         if(beanDefinition == null) {
             throw new RuntimeException("Unable to find the bean of this name, please check!");
         }
-        if(!beanDefinition.isSingleton() || beanDefinition.getBean() == null) {
-            return doCreateBean(beanDefinition);
-        } else {
-            return doCreateBean(beanDefinition);
-        }
+        return getBeanFromBeanDefinition(beanDefinition);
     }
+
 
     @Override
     public Object getBean(Class clazz) throws Exception {
@@ -34,11 +31,30 @@ public abstract class AbstractBeanFactory implements BeanFactory {
         if(beanDefinition == null) {
             throw new RuntimeException("Unable to find the bean of this class, please check!");
         }
-        if(!beanDefinition.isSingleton() || beanDefinition.getBean() == null) {
+        return getBeanFromBeanDefinition(beanDefinition);
+    }
+
+    private Object getBeanFromBeanDefinition(BeanDefinition beanDefinition) throws Exception {
+        if(beanDefinition.isSingleton()){
+            if(beanDefinition.getBean()!=null){
+                return beanDefinition.getBean();
+            }else{
+                /**
+                 * bug场景 ：当多个线程使用同一个BeanFactory，针对同一个单例的beanDefinition 调用getBean
+                 * 如果没有锁，会创建多个对象
+                 */
+                synchronized (this){
+                    if(beanDefinition.getBean()==null){
+                        return doCreateBean(beanDefinition);
+                    }else{
+                        return beanDefinition.getBean();
+                    }
+                }
+            }
+        }else{
             return doCreateBean(beanDefinition);
-        } else {
-            return beanDefinition.getBean();
         }
+
     }
 
     @Override
