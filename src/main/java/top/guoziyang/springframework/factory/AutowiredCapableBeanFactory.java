@@ -5,6 +5,7 @@ import top.guoziyang.springframework.entity.BeanReference;
 import top.guoziyang.springframework.entity.PropertyValue;
 
 import java.lang.reflect.Field;
+import java.util.HashMap;
 
 public class AutowiredCapableBeanFactory extends AbstractBeanFactory {
 
@@ -15,6 +16,8 @@ public class AutowiredCapableBeanFactory extends AbstractBeanFactory {
         }
         Object bean = beanDefinition.getBeanClass().newInstance();
         if(beanDefinition.isSingleton()) {
+            //如果是单例，就算没有完成属性赋值，也可以存起来
+            //这样可以直接避免出现循环依赖导致的死循环问题
             beanDefinition.setBean(bean);
         }
         applyPropertyValues(bean, beanDefinition);
@@ -36,31 +39,47 @@ public class AutowiredCapableBeanFactory extends AbstractBeanFactory {
                 // 优先按照自定义名称匹配
                 BeanDefinition refDefinition = beanDefinitionMap.get(beanReference.getName());
                 if(refDefinition != null) {
-                    if(!refDefinition.isSingleton() || refDefinition.getBean() == null) {
-                        value = doCreateBean(refDefinition);
-                    } else {
-                        value = refDefinition.getBean();
-                    }
+                    value = createBeanFromBeanDefinition(bean, beanDefinition, beanReference, refDefinition);
                 } else {
                     // 按照类型匹配，返回第一个匹配的
                     Class clazz = Class.forName(beanReference.getName());
                     for(BeanDefinition definition : beanDefinitionMap.values()) {
                         if(clazz.isAssignableFrom(definition.getBeanClass())) {
-                            if(!definition.isSingleton() || definition.getBean() == null) {
-                                value = doCreateBean(definition);
-                            } else {
-                                value = definition.getBean();
-                            }
+                            value = createBeanFromBeanDefinition(bean, beanDefinition, beanReference, refDefinition);
                         }
                     }
                 }
-
             }
             if(value == null) {
                 throw new RuntimeException("无法注入");
             }
             field.setAccessible(true);
             field.set(bean, value);
+        }
+        //如果自己在earlyBean里，就删除
+        if(earylyBean.get()!=null && earylyBean.get().containsKey(beanDefinition.getBeanClassName())){
+            earylyBean.get().remove(beanDefinition.getBeanClassName());
+        }
+    }
+
+    private Object createBeanFromBeanDefinition(Object bean, BeanDefinition beanDefinition, BeanReference beanReference, BeanDefinition refDefinition) throws Exception {
+        if(refDefinition.isSingleton()){
+            //单例就直接拿
+            if(refDefinition.getBean()!=null){
+                return refDefinition.getBean();
+            }else{
+                return doCreateBean(refDefinition);
+            }
+        }else{
+            //先把自己放入earlyBean
+            if(earylyBean.get() == null){
+                earylyBean.set(new HashMap<>());
+            }
+            if(!earylyBean.get().containsKey(beanDefinition.getBeanClassName())){
+                earylyBean.get().put(beanDefinition.getBeanClassName(), bean);
+            }
+            //再尝试获取所需的Bean
+            return getBean(beanReference.getName());
         }
     }
 

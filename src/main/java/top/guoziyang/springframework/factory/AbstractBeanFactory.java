@@ -2,12 +2,15 @@ package top.guoziyang.springframework.factory;
 
 import top.guoziyang.springframework.entity.BeanDefinition;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 public abstract class AbstractBeanFactory implements BeanFactory {
 
     ConcurrentHashMap<String, BeanDefinition> beanDefinitionMap = new ConcurrentHashMap<>();
+
+    ThreadLocal<HashMap<String,Object>> earylyBean = new ThreadLocal<HashMap<String, Object>>();
 
     @Override
     public Object getBean(String name) throws Exception {
@@ -52,7 +55,13 @@ public abstract class AbstractBeanFactory implements BeanFactory {
                 }
             }
         }else{
-            return doCreateBean(beanDefinition);
+            //不是单例  先从earlyBean中找，如果没有就新创建
+            HashMap<String, Object> earlyBeanMap = earylyBean.get();
+            if(earlyBeanMap!=null && earlyBeanMap.containsKey(beanDefinition.getBeanClassName())){
+                return earlyBeanMap.get(beanDefinition.getBeanClassName());
+            }else{
+                return doCreateBean(beanDefinition);
+            }
         }
 
     }
