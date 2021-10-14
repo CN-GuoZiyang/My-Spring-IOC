@@ -45,7 +45,7 @@ public class AutowiredCapableBeanFactory extends AbstractBeanFactory {
                     Class clazz = Class.forName(beanReference.getName());
                     for(BeanDefinition definition : beanDefinitionMap.values()) {
                         if(clazz.isAssignableFrom(definition.getBeanClass())) {
-                            value = createBeanFromBeanDefinition(bean, beanDefinition, beanReference, refDefinition);
+                            value = createBeanFromBeanDefinition(bean, beanDefinition, beanReference, definition);
                         }
                     }
                 }
@@ -62,7 +62,8 @@ public class AutowiredCapableBeanFactory extends AbstractBeanFactory {
         }
     }
 
-    private Object createBeanFromBeanDefinition(Object bean, BeanDefinition beanDefinition, BeanReference beanReference, BeanDefinition refDefinition) throws Exception {
+    private Object createBeanFromBeanDefinition(Object bean, BeanDefinition beanDefinition, BeanReference beanReference,
+                                                BeanDefinition refDefinition) throws Exception {
         if(refDefinition.isSingleton()){
             //单例就直接拿
             if(refDefinition.getBean()!=null){
